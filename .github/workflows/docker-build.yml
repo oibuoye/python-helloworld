@@ -1,0 +1,24 @@
+##  Named of the workflow.
+name: Docker Build Image
+## Set the trigger policy.
+## In this case, the workflow is execute on a `push` event,
+## or when a new commit is pushed to the repository
+on: [push]
+## List the steps to be executed by the workflow
+jobs:
+  build:
+    ## Configure the operating system the workflow should run on.
+    ## In this case, the job on Ubuntu
+    runs-on: ubuntu-latest
+    ## Define a sequence of steps to be executed 
+    steps:
+      ## Use the public `checkout` actoin  in version v2  
+      ## to checkout the existing code in the repository
+      - uses: actions/checkout@v2
+      ## Set the name of the job
+      - name: Build the Docker image
+      ## Build the docker image
+      - run: docker build --tag opecodeforliving/python-helloworld-github-action:latest .
+      ## Push the docker image
+      - run: docker push opecodeforliving/python-helloworld-github-action:latest
+
