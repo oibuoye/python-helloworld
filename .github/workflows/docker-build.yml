@@ -3,7 +3,11 @@ name: Docker Build Image
 ## Set the trigger policy.
 ## In this case, the workflow is execute on a `push` event,
 ## or when a new commit is pushed to the repository
-on: [push]
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
 ## List the steps to be executed by the workflow
 jobs:
   build:
@@ -14,11 +18,21 @@ jobs:
     steps:
       ## Use the public `checkout` actoin  in version v2  
       ## to checkout the existing code in the repository
-      - uses: actions/checkout@v2
-      ## Set the name of the job
-      - name: Build the Docker image
-      ## Build the docker image
-      - run: docker build --tag opecodeforliving/python-helloworld-github-action:latest .
-      ## Push the docker image
-      - run: docker push opecodeforliving/python-helloworld-github-action:latest
+      - name: Check out the repository
+        uses: actions/checkout@v2
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ opecodeforliving }}
+          password: ${{ Newpassword2021. }}
+
+      ## Build and push container image.
+      - name: Build and push container image
+        uses: docker/build-push-action@v2
+        with:
+         context: .
+          push: true
+          tags: opecodeforliving/python-helloworld-github-action:latest
+
 
